@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Import Export - Modern GPS Tracking</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            /* Vibrant Gradient Background */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Animated Background Elements --- */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .circle1 {
+            width: 300px; height: 300px; top: 10%; left: 10%; animation-delay: 0s;
+        }
+
+        .circle2 {
+            width: 200px; height: 200px; top: 60%; right: 10%; animation-delay: 5s;
+        }
+
+        .circle3 {
+            width: 150px; height: 150px; bottom: 20%; left: 50%; animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            position: fixed;
+            width: 100%;
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Logo and Brand Name Styling */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-image-nav {
+            height: 40px; 
+            width: auto;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: -1px;
+        }
+        /* Navigation Links */
+        .nav-items {
+            display: flex;
+            gap: 45px;
+            list-style: none;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .nav-items a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-items a:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mobile Menu Toggle */
+        #menu-toggle { display: none; }
+        .menu-icon {
+            display: none; /* Hidden by default on desktop */
+            font-size: 30px;
+            cursor: pointer;
+            color: #fff;
+            z-index: 1001;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            line-height: 1; /* Fix vertical alignment of the hamburger icon */
+        }
+        .menu-icon::before { content: "\2261"; }
+        #menu-toggle:checked ~ .menu-icon::before { content: "\2715"; }
+
+
+        /* --- Hero Section --- */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 6% 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+            border-radius: 30px;
+            padding: 80px 70px;
+            max-width: 1100px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: 68px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            font-weight: 900;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-size: 22px;
+            line-height: 1.7;
+            margin-bottom: 50px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .glass-btn {
+            padding: 18px 45px;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            border: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-white {
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-white:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-solid {
+            background: #fff;
+            color: #667eea;
+            border: 2px solid #fff;
+        }
+
+        .btn-solid:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- Features Section --- */
+        .features-section {
+            padding: 100px 6%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-size: 54px;
+            margin-bottom: 20px;
+            font-weight: 900;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border-radius: 25px;
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .glass-card:hover::before { opacity: 1; }
+
+        .card-icon {
+            font-size: 50px;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .glass-card h3 {
+            font-size: 26px;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .glass-card p {
+            font-size: 17px;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        /* --- Stats Section --- */
+        .stats-section {
+            padding: 100px 6%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+            border-radius: 30px;
+            padding: 70px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 50px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-label {
+            font-size: 19px;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        /* --- CTA Section --- */
+        .cta-section {
+            padding: 100px 6%;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .cta-glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(30px);
+            border-radius: 30px;
+            padding: 80px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-glass h2 {
+            font-size: 52px;
+            margin-bottom: 25px;
+            font-weight: 900;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-glass p {
+            font-size: 21px;
+            margin-bottom: 45px;
+            opacity: 0.95;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            padding: 60px 6% 30px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        
+        .logo-image-footer {
+            height: 35px; 
+            width: auto;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
+        }
+
+        .footer-logo-text {
+            font-size: 32px;
+            font-weight: 900;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .footer p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+
+
+        /* ==================================================
+        RESPONSIVENESS (Tablet and Mobile)
+        ================================================== */
+        
+        /* Tablet Screens (Max Width 1024px) */
+        @media (max-width: 1024px) {
+             /* General Padding Adjustment */
+            nav, .hero-section, .features-section, .stats-section, .cta-section, .footer {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            /* Hero Title Scaling */
+            .hero-title { font-size: 58px; }
+            .hero-subtitle { font-size: 20px; }
+            .glass-container { padding: 60px 50px; }
+            
+            /* Section Headers Scaling */
+            .section-header h2 { font-size: 48px; }
+            .cta-glass h2 { font-size: 44px; }
+
+            /* Feature Grid Adjustment (still allows two columns) */
+            .features-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+            
+            /* Stats Grid Adjustment (always 2 columns for wider mobile views) */
+            .stats-grid { grid-template-columns: 1fr 1fr; } 
+            .stat-number { font-size: 56px; }
+        }
+
+        /* Mobile Screens (Max Width 768px) */
+        @media (max-width: 768px) {
+            
+            /* Navigation Mobile Menu */
+            .menu-icon { display: block; }
+            .nav-items {
+                position: absolute;
+                top: 90px; /* Below the navbar */
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background: rgba(40, 40, 40, 0.9); /* Dark overlay for menu */
+                backdrop-filter: blur(15px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+                transform: translateY(-120%); /* Move off-screen initially */
+                transition: transform 0.4s ease-in-out;
+                pointer-events: none;
+                padding: 20px 0;
+            }
+            #menu-toggle:checked ~ .nav-items {
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+            .nav-items li {
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .nav-items li:last-child { border-bottom: none; }
+            .nav-items a { font-size: 18px; display: block; }
+
+
+            /* Hero Section */
+            .hero-title { font-size: 42px; }
+            .hero-subtitle { font-size: 18px; }
+            .glass-container { padding: 40px 30px; border-radius: 20px; }
+            .action-buttons { flex-direction: column; gap: 15px; }
+            .glass-btn { width: 100%; text-align: center; padding: 16px 30px; }
+
+            /* Section Headers */
+            .section-header h2 { font-size: 38px; }
+            .section-header p { font-size: 16px; }
+            .features-section, .stats-section, .cta-section { padding: 80px 5%; }
+
+            /* Grids */
+            .features-grid { grid-template-columns: 1fr; }
+            .glass-card { padding: 40px 30px; border-radius: 20px; }
+            .stats-glass { padding: 40px 30px; border-radius: 20px; }
+            
+            /* CTA */
+            .cta-glass h2 { font-size: 38px; }
+            .cta-glass p { font-size: 18px; margin-bottom: 30px; }
+        }
+
+        /* Extra Small Screens (Max Width 480px) */
+        @media (max-width: 480px) {
+            /* Logo Scaling */
+            .logo, .footer-logo-text { font-size: 26px; }
+            .logo-image-nav { height: 30px; }
+
+            /* Hero Title Scaling */
+            .hero-title { font-size: 32px; }
+            .hero-subtitle { font-size: 16px; margin-bottom: 30px; }
+            .badge { padding: 8px 20px; font-size: 11px; margin-bottom: 20px; }
+            .glass-btn { font-size: 16px; }
+
+            /* Headers */
+            .section-header h2, .cta-glass h2 { font-size: 30px; }
+
+            /* Stats Stacking */
+            .stats-grid { grid-template-columns: 1fr; } /* Stack stats vertically on small phones */
+            .stat-number { font-size: 40px; }
+            .stat-label { font-size: 16px; }
+            .stats-glass { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="circle circle1"></div>
+        <div class="circle circle2"></div>
+        <div class="circle circle3"></div>
+    </div>
+
+    <nav>
+        <div class="logo-container">
+            <!-- Placeholder Image for OM Import Export GPS Logo -->
+            <img src="logo.png" alt="OM Import Export GPS Logo" class="logo-image-nav">
+            <div class="logo">OM GPS</div>
+        </div>
+
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon"></label>
+
+        <ul class="nav-items">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#technology">Technology</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero-section" id="home">
+        <div class="glass-container">
+            <div class="badge">🚀 Next Generation Tracking</div>
+            <h1 class="hero-title">GPS Tracking<br>Reimagined</h1>
+            <p class="hero-subtitle">Experience the future of location tracking with our cutting-edge GPS solutions. Real-time monitoring, advanced analytics, and seamless integration for businesses of all sizes.</p>
+            <div class="action-buttons">
+                <a href="#" class="glass-btn btn-solid">Start Free Trial</a>
+                <a href="#" class="glass-btn btn-white">Explore Features</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <h2>Powerful Features</h2>
+            <p>Everything you need to track, monitor, and optimize your fleet operations in one comprehensive platform.</p>
+        </div>
+        <div class="features-grid">
+            <div class="glass-card">
+                <div class="card-icon">📍</div>
+                <h3>Real-Time Precision</h3>
+                <p>Advanced satellite technology ensures pinpoint accuracy for all your tracking needs with millisecond updates.</p>
+            </div>
+            <div class="glass-card">
+                <div class="card-icon">🎯</div>
+                <h3>Geofencing Alerts</h3>
+                <p>Set up virtual boundaries and receive instant notifications when assets enter or exit designated areas.</p>
+            </div>
+            <div class="glass-card">
+                <div class="card-icon">📊</div>
+                <h3>Smart Analytics</h3>
+                <p>AI-powered insights and detailed reports to optimize routes, reduce costs, and improve efficiency.</p>
+            </div>
+            <div class="glass-card">
+                <div class="card-icon">🚛</div>
+                <h3>Fleet Management</h3>
+                <p>Complete visibility and control over your entire fleet with driver behavior monitoring and fuel tracking.</p>
+            </div>
+            <div class="glass-card">
+                <div class="card-icon">🔔</div>
+                <h3>Instant Notifications</h3>
+                <p>Real-time alerts for speeding, unauthorized usage, maintenance schedules, and critical events.</p>
+            </div>
+            <div class="glass-card">
+                <div class="card-icon">🌐</div>
+                <h3>Cloud Platform</h3>
+                <p>Access your tracking data anywhere, anytime with our secure cloud-based dashboard and mobile apps.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section" id="technology">
+        <div class="stats-glass">
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-number">25K+</div>
+                    <div class="stat-label">Active Devices</div>
+                </div>
+                <div>
+                    <div class="stat-number">1200+</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div>
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime SLA</div>
+                </div>
+                <div>
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Expert Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <div class="cta-glass">
+            <h2>Ready to Get Started?</h2>
+            <p>Transform your operations with cutting-edge GPS tracking technology. Join thousands of satisfied customers today.</p>
+            <a href="#" class="glass-btn btn-solid">Request a Demo</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-logo-container">
+            <!-- Placeholder Image for OM Import Export GPS Logo -->
+            <img src="logo.png" alt="OM Import Export GPS Logo" class="logo-image-footer">
+            <div class="footer-logo-text">OM Import Export</div>
+        </div>
+        <p>&copy; 2025 OM Import Export GPS. Transforming India with GPS Tracking Solutions.</p>
+    </footer>
+</body>
+</html>

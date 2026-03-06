@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Import Export - Professional GPS Tracking Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: #ffffff;
+            color: #1e293b;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Global / Base Styles --- */
+        .top-bar {
+            background: #0f172a;
+            color: #fff;
+            padding: 12px 8%;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-contact {
+            display: flex;
+            gap: 30px;
+        }
+
+        /* --- Navigation Styles --- */
+        nav {
+            background: #fff;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-image { height: 50px; width: auto; }
+
+        /* --- LOGO FONT SIZE: Desktop Default --- */
+        .logo {
+            font-size: 34px;
+            font-weight: 900;
+            color: #0ea5e9;
+            letter-spacing: -0.5px;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 45px;
+            list-style: none;
+            align-items: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .main-nav a {
+            color: #475569;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.3s;
+            position: relative;
+            display: block;
+        }
+
+        .main-nav a:hover { color: #0ea5e9; }
+
+        .nav-cta {
+            background: #0ea5e9;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .nav-cta:hover {
+            background: #0284c7;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+        }
+
+        /* --- Hamburger Menu Styles --- */
+        #menu-toggle { display: none; }
+        .menu-icon { 
+            display: none; 
+            font-size: 30px; 
+            cursor: pointer; 
+            color: #0ea5e9; 
+            z-index: 1001; 
+            padding: 5px 10px; 
+            transition: transform 0.3s;
+        }
+        .menu-icon::before { content: "\2261"; }
+        #menu-toggle:checked ~ .menu-icon::before { content: "\2715"; }
+
+        /* --- Hero Section Styles --- */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 100px 8%;
+            gap: 80px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .hero-text h1 {
+            font-size: 58px;
+            line-height: 1.15;
+            margin-bottom: 25px;
+            color: #0f172a;
+            font-weight: 900;
+        }
+
+        .hero-text h1 span { color: #0ea5e9; }
+
+        .hero-text p {
+            font-size: 20px;
+            color: #475569;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons { display: flex; gap: 20px; }
+        
+        .btn { 
+            padding: 16px 38px; border-radius: 8px; font-size: 16px; 
+            font-weight: 700; cursor: pointer; transition: all 0.3s; 
+            text-decoration: none; display: inline-block; border: none; 
+        }
+
+        .btn-primary { 
+            background: #0ea5e9; color: #fff; 
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3); 
+        }
+
+        .btn-primary:hover {
+            background: #0284c7;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: #0ea5e9;
+            border: 2px solid #0ea5e9;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f9ff;
+            transform: translateY(-3px);
+        }
+        
+        .hero-image { position: relative; }
+
+        .hero-card {
+            background: #fff; border-radius: 16px; padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); margin-bottom: 25px;
+        }
+
+        .hero-card h3 {
+            color: #0ea5e9; font-size: 24px; margin-bottom: 12px;
+        }
+
+        .hero-card p {
+            color: #64748b; font-size: 16px;
+        }
+
+        /* --- Trust Section Styles --- */
+        .trust-section {
+            padding: 60px 8%; background: #fff; text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .trust-section h3 {
+            color: #64748b; font-size: 16px; margin-bottom: 35px;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .trust-stats { display: flex; justify-content: center; gap: 80px; }
+        .stat h2 {
+            font-size: 48px; color: #0ea5e9; font-weight: 900; margin-bottom: 8px;
+        }
+        .stat p {
+            color: #64748b; font-size: 16px; font-weight: 600;
+        }
+
+        /* --- Services Section Styles --- */
+        .services-section { padding: 100px 8%; background: #fff; }
+        .section-title { text-align: center; margin-bottom: 70px; }
+        .section-title h2 {
+            font-size: 48px; color: #0f172a; margin-bottom: 20px; font-weight: 900;
+        }
+        .section-title p {
+            font-size: 19px; color: #64748b; max-width: 700px; margin: 0 auto;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+        }
+        .service-box {
+            background: #f8fafc; border-radius: 12px; padding: 45px 35px;
+            transition: all 0.3s; border: 2px solid transparent;
+        }
+        .service-box:hover {
+            border-color: #0ea5e9; transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
+        }
+        .service-icon {
+            width: 70px; height: 70px; background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; font-size: 32px; margin-bottom: 25px;
+        }
+        .service-box h3 {
+            font-size: 24px; color: #0f172a; margin-bottom: 15px; font-weight: 800;
+        }
+        .service-box p {
+            color: #64748b; font-size: 16px; line-height: 1.7;
+        }
+
+        /* --- Why Choose Section Styles --- */
+        .why-choose {
+            padding: 100px 8%; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: #fff;
+        }
+        .why-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px; margin-top: 60px;
+        }
+        .why-item { text-align: center; }
+        .why-item h3 { font-size: 26px; margin-bottom: 15px; font-weight: 800; }
+        .why-item p { font-size: 17px; opacity: 0.95; line-height: 1.6; }
+
+        /* ==================================================
+        FOOTER STYLES
+        ================================================== */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 80px 8% 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-image {
+            height: 40px;
+            width: auto;
+            max-width: 100%; 
+        }
+        
+        /* --- FOOTER BRAND FONT SIZE: Desktop Default --- */
+        .footer-brand h2 {
+            color: #0ea5e9;
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        .footer-brand p {
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .footer-column h4 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #0ea5e9;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1e293b;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+
+        /* ==================================================
+        RESPONSIVENESS BREAKPOINTS
+        ================================================== */
+        
+        /* Tablet Screens (Max Width 1024px) */
+        @media (max-width: 1024px) {
+            .hero { gap: 40px; }
+            .hero-text h1 { font-size: 48px; }
+            .hero-text p { font-size: 18px; }
+            
+            .services-grid, .why-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .trust-stats { gap: 40px; }
+            .stat h2 { font-size: 40px; }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr; 
+                gap: 40px 30px;
+            }
+            .footer-brand { grid-column: 1 / 2; }
+            .footer-column:nth-child(2) { grid-column: 2 / 3; }
+            .footer-column:nth-child(3) { grid-column: 1 / 2; } 
+            .footer-column:nth-child(4) { grid-column: 2 / 3; }
+        }
+
+        /* Mobile Screens (Max Width 768px) */
+        @media (max-width: 768px) {
+            /* General Padding Adjustment */
+            .top-bar, nav, .hero, .trust-section, .services-section, .why-choose, .footer { 
+                padding-left: 5%; 
+                padding-right: 5%; 
+            }
+            .top-bar-contact {
+                flex-direction: column;
+                gap: 5px;
+            }
+            .top-bar > div:last-child { display: none; }
+
+            /* Navigation and Mobile Menu */
+            .main-nav {
+                position: absolute; top: 90px; left: 0; width: 100%;
+                flex-direction: column; background: #fff;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); padding: 20px 0;
+                transform: translateX(100%); opacity: 0; pointer-events: none; z-index: 999;
+            }
+            #menu-toggle:checked ~ .main-nav {
+                transform: translateX(0); opacity: 1; pointer-events: auto;
+            }
+            .main-nav li { width: 100%; text-align: center; border-bottom: 1px solid #f1f5f9; }
+            .main-nav li:last-child { border-bottom: none; }
+            .main-nav a { padding: 15px 0; font-size: 17px; }
+            .nav-cta { display: block; margin: 20px auto; width: 80%; text-align: center; }
+            .menu-icon { display: block; }
+
+            /* Hero Section */
+            .hero { grid-template-columns: 1fr; padding-top: 50px; padding-bottom: 50px; }
+            .hero-text h1 { font-size: 40px; text-align: center; }
+            .hero-text p { font-size: 16px; text-align: center; }
+            .hero-buttons { justify-content: center; flex-direction: column; }
+            .btn { width: 100%; text-align: center; }
+            .hero-image { order: -1; margin-bottom: 30px; }
+
+            /* Trust Section */
+            .trust-stats { flex-wrap: wrap; gap: 30px; }
+            .stat { width: 40%; }
+            .stat h2 { font-size: 32px; }
+            
+            /* Services/Why Choose Section */
+            .services-section, .why-choose { padding: 60px 5%; }
+            .section-title h2 { font-size: 32px; }
+            .services-grid { grid-template-columns: 1fr; }
+
+            /* Footer Mobile Styles */
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+            .footer-brand { text-align: center; }
+            .footer-brand-logo-group { justify-content: center; }
+            .footer-column h4 { 
+                text-align: center; 
+                margin-top: 20px; 
+            }
+            .footer-column ul { padding-left: 0; }
+            .footer-column a { text-align: center; padding: 5px 0; }
+        }
+        
+        /* Extra Small Screens (Max Width 480px) */
+        @media (max-width: 480px) {
+            /* --- Responsive Logo Font Size Adjustments --- */
+            .logo-container { gap: 10px; }
+            .logo-image { height: 40px; }
+            .logo { font-size: 28px; } /* Navigation Logo smaller */
+            .footer-brand h2 { font-size: 24px; } /* Footer Brand smaller */
+            
+            .hero-text h1 { font-size: 32px; }
+            .trust-stats { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-contact">
+            <span>📞 +91-XXXXXXXXXX</span>
+            <span>✉️ info@omimportexport.in</span>
+        </div>
+        <div>24/7 Support Available</div>
+    </div>
+
+    <nav>
+        <div class="logo-container">
+            <img src="logo.png" alt="OM Import Export GPS Logo" class="logo-image">
+            <div class="logo">OM Import Export</div>
+        </div>
+        
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon"></label>
+
+        <ul class="main-nav">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact" class="nav-cta">Request Demo</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Transforming India With <span>GPS Tracking Solutions</span></h1>
+            <p>Cutting-edge GPS tracking technology that empowers businesses and individuals to enhance safety, security, and operational efficiency with real-time precision monitoring.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Get Started Now</a>
+                <a href="#" class="btn btn-secondary">View Solutions</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-card">
+                <h3>📍 Real-Time Tracking</h3>
+                <p>Monitor your assets 24/7 with pinpoint accuracy</p>
+            </div>
+            <div class="hero-card">
+                <h3>📊 Smart Analytics</h3>
+                <p>Data-driven insights for better decision making</p>
+            </div>
+            <div class="hero-card">
+                <h3>🚛 Fleet Management</h3>
+                <p>Optimize routes and reduce operational costs</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <h3>Trusted by Industry Leaders</h3>
+        <div class="trust-stats">
+            <div class="stat">
+                <h2>15K+</h2>
+                <p>Active Devices</p>
+            </div>
+            <div class="stat">
+                <h2>800+</h2>
+                <p>Enterprise Clients</p>
+            </div>
+            <div class="stat">
+                <h2>99.9%</h2>
+                <p>System Uptime</p>
+            </div>
+            <div class="stat">
+                <h2>24/7</h2>
+                <p>Customer Support</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="section-title">
+            <h2>Comprehensive GPS Solutions</h2>
+            <p>Advanced tracking technology designed to meet the unique needs of businesses across all industries and scales.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-box">
+                <div class="service-icon">🎯</div>
+                <h3>Pinpoint Accuracy</h3>
+                <p>Latest GPS technology providing exact location tracking with industry-leading precision for all your assets.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">⚡</div>
+                <h3>Live Monitoring</h3>
+                <p>Stay connected with 24/7 real-time tracking capabilities and instant updates on your dashboard.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">📈</div>
+                <h3>Advanced Reports</h3>
+                <p>Detailed analytics and insights including historical data and driver behavior analysis.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">🔧</div>
+                <h3>Custom Solutions</h3>
+                <p>Tailored tracking systems for personal use, small businesses, or large fleet operations.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">🛡️</div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock technical support ensuring your systems are always operational.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">🌐</div>
+                <h3>IoT Integration</h3>
+                <p>White-label GPS tracking with robust telematics software for real-time metrics.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-choose">
+        <div class="section-title">
+            <h2 style="color: #fff;">Why Choose OM Import Export?</h2>
+            <p style="color: rgba(255,255,255,0.9);">We combine cutting-edge technology with exceptional service to deliver unmatched GPS tracking solutions.</p>
+        </div>
+        <div class="why-grid">
+            <div class="why-item">
+                <h3>User-Friendly</h3>
+                <p>Intuitive interfaces designed for easy tracking and efficient management</p>
+            </div>
+            <div class="why-item">
+                <h3>Scalable</h3>
+                <p>Solutions that grow with your business from single devices to large fleets</p>
+            </div>
+            <div class="why-item">
+                <h3>Secure</h3>
+                <p>Enterprise-grade security protecting your data and privacy at all times</p>
+            </div>
+            <div class="why-item">
+                <h3>Reliable</h3>
+                <p>Industry-leading 99.9% uptime with redundant systems for continuity</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-brand-logo-group">
+                    <img src="logo.png" alt="OM Import Export GPS Logo" class="footer-logo-image">
+                    <h2>OM Import Export</h2>
+                </div>
+                <p>Leading provider of GPS tracking solutions in India, committed to delivering cutting-edge technology for enhanced safety and efficiency.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Solutions</h4>
+                <ul>
+                    <li><a href="#">Fleet Tracking</a></li>
+                    <li><a href="#">Asset Tracking</a></li>
+                    <li><a href="#">Personal GPS</a></li>
+                    <li><a href="#">White Label</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 OM Import Export GPS. All rights reserved. Transforming India with GPS Tracking Solutions.</p>
+        </div>
+    </footer>
+</body>
+</html>

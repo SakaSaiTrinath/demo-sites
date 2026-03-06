@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Import Export - GPS Tracking Solutions</title>
+    <style>
+        :root {
+            --bg-0: #000;
+            --bg-1: #111;
+            --brand-0: #D90429;
+            --brand-1: #B20021;
+            --text-0: #ffffff;
+            --text-1: #aaaaaa;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.10);
+            --shadow-strong: 0 20px 50px rgba(217, 4, 41, 0.35);
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+            --container: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(1200px 600px at 80% -10%, rgba(217,4,41,0.18), transparent 60%),
+                        linear-gradient(135deg, #0b0b0b 0%, #000 100%);
+            color: var(--text-0);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: min(92%, var(--container));
+            margin-inline: auto;
+        }
+
+        /* Nav */
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            box-shadow: 0 6px 18px rgba(217,4,41,0.4);
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-main {
+            font-size: clamp(18px, 2vw, 24px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, var(--brand-0) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+        .logo-sub { font-size: 10px; color: var(--text-1); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+        .nav-links { list-style: none; display: flex; gap: 28px; }
+        .nav-links a {
+            color: var(--text-0);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            display: inline-block;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute; left: 0; bottom: -6px; height: 2px; width: 0;
+            background: var(--brand-0);
+            transition: width 200ms ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Mobile nav */
+        .nav-toggle { display: none; }
+        .hamburger { display: none; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 10px; align-items: center; justify-content: center; background: transparent; }
+        .hamburger span { width: 20px; height: 2px; background: #fff; position: relative; display: block; transition: transform .3s ease; }
+        .hamburger span::before, .hamburger span::after { content: ''; position: absolute; left: 0; width: 100%; height: 2px; background: #fff; transition: transform .3s ease, top .3s ease, opacity .2s; }
+        .hamburger span::before { top: -6px; }
+        .hamburger span::after { top: 6px; }
+        .nav-toggle:checked + .hamburger span { transform: rotate(45deg); }
+        .nav-toggle:checked + .hamburger span::before { top: 0; transform: rotate(90deg); }
+        .nav-toggle:checked + .hamburger span::after { top: 0; opacity: 0; }
+
+        .mobile-menu { display: none; flex-direction: column; gap: 12px; padding: 12px 0 16px; }
+        .mobile-menu a { color: var(--text-0); text-decoration: none; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,0.03); }
+
+        /* Hero */
+        .hero { position: relative; padding: clamp(80px, 10vw, 120px) 0 80px; overflow: hidden; }
+        .hero .container { display: grid; grid-template-columns: 1fr; align-items: center; gap: clamp(24px, 4vw, 60px); }
+
+        .hero-badge { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,0.04); margin-bottom: 16px; box-shadow: var(--shadow-soft); }
+        .hero-badge i { display: inline-flex; width: 8px; height: 8px; border-radius: 50%; background: var(--brand-0); box-shadow: 0 0 10px rgba(217,4,41,0.9); }
+
+        .hero h1 {
+            font-size: clamp(32px, 6vw, 64px);
+            line-height: 1.15;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #FF5E62 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { font-size: clamp(16px, 2.2vw, 20px); line-height: 1.7; color: var(--text-1); margin-bottom: 28px; }
+
+        .cta-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+        .btn { padding: 14px 28px; border: none; border-radius: 999px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: transform .2s ease, box-shadow .3s ease, background .3s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--brand-0) 0%, var(--brand-1) 100%); color: #fff; box-shadow: var(--shadow-strong); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 26px 60px rgba(217, 4, 41, 0.45); }
+        .btn-secondary { background: rgba(255,255,255,0.04); color: #fff; border: 1px solid var(--border); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+        /* Video section */
+        .video-section { padding: 80px 0; background: #000; }
+        .video-container { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .video-container h2 { font-size: clamp(26px, 4.2vw, 42px); margin-bottom: 10px; background: linear-gradient(135deg, #fff 0%, #FF5E62 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .video-container p { font-size: clamp(15px, 2vw, 18px); color: var(--text-1); margin-bottom: 24px; }
+        .video-frame { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); background: var(--card-bg); box-shadow: var(--shadow-soft); }
+        .video-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+        /* Features */
+        .features { padding: 90px 0; background: rgba(255,255,255,0.02); }
+        .section-title { text-align: center; font-size: clamp(28px, 4.5vw, 48px); margin-bottom: 36px; background: linear-gradient(135deg, #fff 0%, #FF5E62 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-sub { text-align: center; color: var(--text-1); margin-bottom: 36px; font-size: clamp(15px, 2vw, 18px); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+        .feature-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 26px; transition: transform .2s ease, box-shadow .3s ease, border-color .3s ease; }
+        .feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-soft); border-color: rgba(217,4,41,0.5); }
+        .feature-icon { width: 54px; height: 54px; background: linear-gradient(135deg, var(--brand-0), var(--brand-1)); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 14px; }
+        .feature-card h3 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+        .feature-card p { color: var(--text-1); line-height: 1.65; font-size: 15px; }
+
+        /* Stats */
+        .stats { padding: 80px 0; background: linear-gradient(135deg, var(--brand-0) 0%, var(--brand-1) 100%); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 22px; text-align: center; }
+        .stat-item h2 { font-size: clamp(36px, 6vw, 56px); margin-bottom: 6px; }
+        .stat-item p { font-size: clamp(14px, 2vw, 18px); opacity: 0.92; }
+
+        /* Footer */
+        footer { padding: 34px 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-1); }
+
+        /* Animations removed per request */
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+
+        /* Breakpoints */
+        @media (max-width: 1024px) {
+            .hero .container { grid-template-columns: 1fr; }
+            .visual { order: -1; height: clamp(300px, 50vw, 460px); }
+            .nav-links { display: none; }
+            .hamburger { display: inline-flex; }
+            .mobile-menu { display: none; }
+            .nav-toggle:checked ~ .mobile-menu { display: flex; }
+        }
+
+        @media (max-width: 640px) {
+            .hero { padding-top: 72px; }
+            .cta-buttons { flex-direction: column; align-items: stretch; }
+            .btn { justify-content: center; width: 100%; }
+            /* No hero motion on small screens */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation">
+        <div class="container nav-inner">
+            <div class="logo-container">
+                <img src="logo.png" alt="OM Import Export Logo" class="logo-icon">
+                <div class="logo-text">
+                    <div class="logo-main">OM Import Export</div>
+                    <div class="logo-sub">GPS Solutions</div>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <label class="hamburger" for="nav-toggle" aria-hidden="true"><span></span></label>
+        </div>
+        <div class="container mobile-menu" aria-label="Mobile navigation">
+            <a href="#home" onclick="document.getElementById('nav-toggle').checked=false">Home</a>
+            <a href="#features" onclick="document.getElementById('nav-toggle').checked=false">Features</a>
+            <a href="#solutions" onclick="document.getElementById('nav-toggle').checked=false">Solutions</a>
+            <a href="#contact" onclick="document.getElementById('nav-toggle').checked=false">Contact</a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge"><i></i><span>Real-time Telematics & Fleet Intelligence</span></div>
+                    <h1>Transforming India With GPS Tracking</h1>
+                    <p>Cutting-edge GPS tracking solutions that empower businesses and individuals to enhance safety, security, and operational efficiency with real-time precision.</p>
+                    <div class="cta-buttons">
+                        <a href="#" class="btn btn-primary">Get Started</a>
+                        <a href="#features" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="video-section">
+            <div class="container">
+                <div class="video-container">
+                    <h2>See Our Technology in Action</h2>
+                    <p>Real-time GPS tracking with advanced analytics and intelligent fleet management</p>
+                    <div class="video-frame">
+                        <video autoplay loop muted playsinline poster="placeholder-image.jpg">
+                            <source src="homepage-video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">Our Core Features</h2>
+                <p class="section-sub">Robust, scalable solutions built for performance, safety, and visibility</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Pinpoint Accuracy</h3>
+                        <p>GPS tracking devices with latest technology providing exact location accuracy for all your assets and vehicles.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Real-Time Updates</h3>
+                        <p>Stay connected 24/7 with real-time tracking capabilities and instant notifications on your dashboard.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>Advanced Analytics</h3>
+                        <p>Detailed reports and analytics providing valuable insights into operations and driver behavior analysis.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔧</div>
+                        <h3>Custom Solutions</h3>
+                        <p>Tailored tracking solutions for personal use, small businesses, or large fleet management requirements.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>24/7 Support</h3>
+                        <p>Round-the-clock customer support to ensure your tracking systems are always operational and efficient.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💎</div>
+                        <h3>White Label Solutions</h3>
+                        <p>Complete telematics and IoT solutions with robust GPS tracking software for real-time metrics.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h2>10K+</h2>
+                        <p>Active Devices</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2>500+</h2>
+                        <p>Happy Clients</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2>99.9%</h2>
+                        <p>Uptime</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2>24/7</h2>
+                        <p>Support Available</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 OM Import Export GPS. All rights reserved. | Transforming India with GPS Tracking Solutions</p>
+        </div>
+    </footer>
+
+    <script>
+        // Close mobile menu on route hash change (in case of anchors)
+        window.addEventListener('hashchange', function() {
+            var t = document.getElementById('nav-toggle');
+            if (t) t.checked = false;
+        });
+    </script>
+</body>
+</html>

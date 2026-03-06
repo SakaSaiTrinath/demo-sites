@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Import Export - Next-Gen GPS Tracking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+
+
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 8% 80px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            position: relative;
+            overflow: hidden;
+            justify-content: space-between;
+        }
+
+        .hero-video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .hero-video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: brightness(0.4) grayscale(0.2);
+        }
+
+        .hero-section::before, .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(217, 4, 41, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .hero-section::before {
+            top: -200px;
+            right: -200px;
+        }
+
+        .hero-section::after {
+            bottom: -300px;
+            left: -300px;
+        }
+
+        .hero-content {
+            max-width: 650px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #D90429, #B20021);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hero-content h1 {
+            font-size: 72px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -2px;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 22px;
+            line-height: 1.7;
+            color: #aaaaaa;
+            margin-bottom: 45px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 18px 45px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #D90429 0%, #B20021 100%);
+            color: #fff;
+            box-shadow: 0 20px 40px rgba(217, 4, 41, 0.3);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(217, 4, 41, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #D90429;
+            border: 3px solid #D90429;
+        }
+
+        .btn-outline:hover {
+            background: #D90429;
+            color: #fff;
+            transform: translateY(-5px);
+        }
+
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            min-height: 400px;
+        }
+
+        /* --- ANIMATION STYLES (Omitted for brevity, but included for complete code) --- */
+        .animation-container {
+            width: 550px;
+            height: 550px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .satellite-orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(217, 4, 41, 0.5);
+            animation: rotateOrbit 30s linear infinite;
+        }
+
+        @keyframes rotateOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .main-satellite {
+            font-size: 90px;
+            position: absolute;
+            color: #D90429;
+            animation: float 4s ease-in-out infinite, pulseGlow 2s infinite alternate;
+            text-shadow: 0 0 20px rgba(217, 4, 41, 0.8);
+        }
+
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 10px rgba(217, 4, 41, 0.5), 0 0 20px rgba(217, 4, 41, 0.3); }
+            to { text-shadow: 0 0 20px rgba(217, 4, 41, 0.8), 0 0 30px rgba(217, 4, 41, 0.5); }
+        }
+
+        .tracking-point {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #00e676;
+            border-radius: 50%;
+            opacity: 0;
+            animation: trackPulse 3s infinite ease-out;
+        }
+
+        @keyframes trackPulse {
+            0% { transform: scale(0); opacity: 1; background-color: #00e676; }
+            50% { transform: scale(1.5); opacity: 0.5; background-color: #00e676; }
+            100% { transform: scale(2); opacity: 0; background-color: #00e676; }
+        }
+
+        .tracking-point:nth-child(2) { top: 10%; left: 20%; animation-delay: 0.5s; }
+        .tracking-point:nth-child(3) { top: 70%; left: 80%; animation-delay: 1.2s; }
+        .tracking-point:nth-child(4) { top: 40%; left: 10%; animation-delay: 2s; }
+        .tracking-point:nth-child(5) { top: 85%; left: 45%; animation-delay: 2.8s; }
+
+
+        .animated-vehicle {
+            position: absolute;
+            font-size: 40px;
+            animation: moveAround 15s linear infinite;
+        }
+
+        .animated-vehicle.truck {
+            animation-delay: 0s;
+            top: 20%;
+            left: 10%;
+        }
+        .animated-vehicle.car {
+            animation-delay: 5s;
+            top: 80%;
+            left: 20%;
+        }
+        .animated-vehicle.bus {
+            animation-delay: 10s;
+            top: 50%;
+            left: 90%;
+        }
+
+        @keyframes moveAround {
+            0% { transform: translate(-50%, -50%) translateX(0) translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            25% { transform: translate(-50%, -50%) translateX(100px) translateY(50px); }
+            50% { transform: translate(-50%, -50%) translateX(200px) translateY(-100px); }
+            75% { transform: translate(-50%, -50%) translateX(100px) translateY(150px); }
+            90% { opacity: 1; }
+            100% { transform: translate(-50%, -50%) translateX(0) translateY(0); opacity: 0; }
+        }
+        /* --- END ANIMATION STYLES --- */
+
+
+        .services {
+            padding: 120px 8%;
+            background: #000;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+        }
+
+        .section-header h2 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: #aaaaaa;
+            line-height: 1.6;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 50px;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #D90429 0%, #B20021 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 0;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(217, 4, 41, 0.3);
+        }
+
+        .service-card > * {
+            position: relative;
+            z-index: 1;
+            transition: color 0.4s;
+        }
+
+        .service-card:hover > * {
+            color: #fff;
+        }
+
+        .service-icon {
+            font-size: 50px;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .service-card h3 {
+            font-size: 28px;
+            margin-bottom: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .service-card p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #aaaaaa;
+        }
+
+        .cta-section {
+            padding: 120px 8%;
+            background: linear-gradient(135deg, #D90429 0%, #B20021 100%);
+            text-align: center;
+            color: #fff;
+        }
+
+        .cta-section h2 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .cta-section p {
+            font-size: 22px;
+            margin-bottom: 45px;
+            opacity: 0.95;
+        }
+
+        .btn-white {
+            background: #fff;
+            color: #D90429;
+            padding: 20px 50px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-white:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            padding: 60px 8%;
+            background: #1a1a1a;
+            color: #aaaaaa;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Responsive adjustments for mid-screens */
+        @media (max-width: 1024px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 150px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+                margin-bottom: 60px;
+            }
+
+            .hero-content h1 {
+                font-size: 56px;
+            }
+
+            .hero-content p {
+                font-size: 18px;
+            }
+
+            .btn-group {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                min-height: 350px;
+            }
+
+            .animation-container {
+                width: 450px;
+                height: 450px;
+            }
+
+            .main-satellite {
+                font-size: 70px;
+            }
+
+            .animated-vehicle {
+                font-size: 30px;
+            }
+
+            .section-header h2, .cta-section h2 {
+                font-size: 48px;
+            }
+        }
+
+
+        /* Responsive adjustments for small screens (Mobile) */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 100px 5% 60px;
+            }
+
+            .hero-content h1 {
+                font-size: 42px;
+            }
+            
+            .hero-content p {
+                font-size: 16px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .services, .cta-section, .footer {
+                padding: 80px 5%;
+            }
+
+            .section-header h2, .cta-section h2 {
+                font-size: 36px;
+            }
+
+            .section-header p, .cta-section p {
+                font-size: 16px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-card {
+                padding: 40px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .footer-logo {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+    <script src="navbar.js"></script>
+</head>
+<body>
+
+    <section class="hero-section">
+        <div class="hero-video-background">
+            <video autoplay loop muted playsinline>
+                <source src="homepage-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="hero-content">
+            <div class="badge">🚀 Next-Generation GPS Technology</div>
+            <h1>Track Smarter,<br><span>Grow Faster</span></h1>
+            <p>Revolutionary GPS tracking solutions powered by AI and IoT technology. Transform your fleet management with real-time insights and predictive analytics.</p>
+            <div class="btn-group">
+                <a href="#" class="btn btn-gradient">Start Free Trial</a>
+                <a href="#" class="btn btn-outline">Watch Demo</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="animation-container">
+                <div class="satellite-orbit"></div>
+                <div class="main-satellite">🛰️</div>
+                <div class="tracking-point"></div>
+                <div class="tracking-point"></div>
+                <div class="tracking-point"></div>
+                <div class="tracking-point"></div>
+                <div class="animated-vehicle truck">🚚</div>
+                <div class="animated-vehicle car">🚗</div>
+                <div class="animated-vehicle bus">🚌</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services">
+        <div class="section-header">
+            <h2>Complete GPS Solutions</h2>
+            <p>Comprehensive tracking technology designed for businesses of all sizes, from startups to enterprise fleets.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎯</div>
+                <h3>Precision Tracking</h3>
+                <p>Pinpoint accuracy with advanced satellite technology ensuring you always know exact locations in real-time.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🚛</div>
+                <h3>Fleet Management</h3>
+                <p>Optimize routes, reduce fuel costs, and improve driver safety with our intelligent fleet management system.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Smart Analytics</h3>
+                <p>Data-driven insights with AI-powered analytics to help you make informed business decisions instantly.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔔</div>
+                <h3>Instant Alerts</h3>
+                <p>Real-time notifications for geofencing, speeding, and unauthorized usage keeping you always informed.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚙️</div>
+                <h3>Custom Integration</h3>
+                <p>Seamless integration with your existing systems through our robust API and white-label solutions.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🛡️</div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock expert support ensuring your tracking systems are always operational and efficient.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to Transform Your Business?</h2>
+        <p>Join thousands of businesses already using our GPS tracking solutions</p>
+        <a href="#" class="btn-white">Get Started Today</a>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">OM Import Export</div>
+            <p>&copy; 2025 OM Import Export GPS. Transforming India with GPS Tracking Solutions.</p>
+        </div>
+    </footer>
+</body>
+</html>

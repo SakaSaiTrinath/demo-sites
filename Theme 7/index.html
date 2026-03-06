@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Import Export - Professional GPS Tracking Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            /* --- THEME CHANGE: Dark Background --- */
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .top-bar {
+            /* --- THEME CHANGE: Red Accent Bar --- */
+            background: #D90429;
+            color: #fff;
+            padding: 12px 8%;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-contact {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav {
+            /* --- THEME CHANGE: Dark Navbar --- */
+            background: #0a0a0a;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* --- THEME CHANGE: Dark Shadow --- */
+            box-shadow: 0 2px 20px rgba(217, 4, 41, 0.15);
+            border-bottom: 1px solid #1a1a1a;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* --- MODIFIED CSS FOR LOGO --- */
+        .logo-shield {
+            width: 55px;
+            height: 55px;
+            background: #fff; /* White background for logo */
+            border-radius: 50%; /* Circular */
+            object-fit: contain;
+            /* --- THEME CHANGE: Red Shadow --- */
+            box-shadow: 0 4px 15px rgba(217, 4, 41, 0.3);
+        }
+        /* --- END OF MODIFICATION --- */
+
+        .logo-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            /* --- THEME CHANGE: Red Gradient Text --- */
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-tagline {
+            font-size: 11px;
+            /* --- THEME CHANGE: Light Gray Text --- */
+            color: #aaaaaa;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 45px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .main-nav a {
+            /* --- THEME CHANGE: Light Text --- */
+            color: #dddddd;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .main-nav a:hover {
+            /* --- THEME CHANGE: Red Hover --- */
+            color: #D90429;
+        }
+
+        .nav-cta {
+            /* --- THEME CHANGE: Red Button --- */
+            background: #D90429;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .nav-cta:hover {
+            /* --- THEME CHANGE: Darker Red Hover --- */
+            background: #B20021;
+            transform: translateY(-2px);
+            /* --- THEME CHANGE: Red Shadow --- */
+            box-shadow: 0 10px 25px rgba(217, 4, 41, 0.4);
+        }
+
+        /* --- NEW CSS FOR MOBILE NAV TOGGLE (CHECKBOX HACK) --- */
+        .nav-toggle {
+            display: none;
+        }
+
+        .nav-toggle-label {
+            display: none; /* Hide by default on desktop */
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            z-index: 1001; /* Ensure it's above the menu */
+            margin-left: auto; /* Push to the right on mobile */
+        }
+
+        .hamburger, .hamburger::before, .hamburger::after {
+            display: block;
+            content: '';
+            position: absolute;
+            height: 3px;
+            background: #D90429;
+            border-radius: 3px;
+            transition: all 0.3s;
+            width: 100%;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .hamburger::before {
+            top: -10px;
+            transform: translateY(0);
+        }
+
+        .hamburger::after {
+            top: 10px;
+            transform: translateY(0);
+        }
+
+        /* Transform hamburger to an 'X' when checked */
+        #nav-toggle:checked + .nav-toggle-label .hamburger {
+            background: transparent;
+        }
+
+        #nav-toggle:checked + .nav-toggle-label .hamburger::before {
+            top: 0;
+            transform: rotate(45deg);
+        }
+
+        #nav-toggle:checked + .nav-toggle-label .hamburger::after {
+            top: 0;
+            transform: rotate(-45deg);
+        }
+        /* --- END NEW CSS FOR MOBILE NAV --- */
+
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 100px 8%;
+            gap: 80px;
+            /* --- THEME CHANGE: Dark Gradient --- */
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            position: relative;
+        }
+
+        .hero-text h1 {
+            font-size: 58px;
+            line-height: 1.15;
+            margin-bottom: 25px;
+            /* --- THEME CHANGE: Light Text --- */
+            color: #ffffff;
+            font-weight: 900;
+        }
+
+        .hero-text h1 span {
+            /* --- THEME CHANGE: Red Text --- */
+            color: #D90429;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            /* --- THEME CHANGE: Light Gray Text --- */
+            color: #aaaaaa;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 38px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+
+        .btn-primary {
+            /* --- THEME CHANGE: Red Button --- */
+            background: #D90429;
+            color: #fff;
+            /* --- THEME CHANGE: Red Shadow --- */
+            box-shadow: 0 10px 30px rgba(217, 4, 41, 0.3);
+        }
+
+        .btn-primary:hover {
+            /* --- THEME CHANGE: Darker Red Hover --- */
+            background: #B20021;
+            transform: translateY(-3px);
+            /* --- THEME CHANGE: Red Shadow --- */
+            box-shadow: 0 15px 40px rgba(217, 4, 41, 0.4);
+        }
+
+        .btn-secondary {
+            /* --- THEME CHANGE: Red Outline Button --- */
+            background: transparent;
+            color: #D90429;
+            border: 2px solid #D90429;
+        }
+
+        .btn-secondary:hover {
+            /* --- THEME CHANGE: Red Fill Hover --- */
+            background: rgba(217, 4, 41, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .hero-animation {
+            position: relative;
+            height: 500px;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 100%;
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #111;
+            border-radius: 20px;
+            /* --- THEME CHANGE: Red Shadow --- */
+            box-shadow: 0 20px 60px rgba(217, 4, 41, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /* --- THEME CHANGE: Red Grid --- */
+            background-image: 
+                linear-gradient(rgba(217, 4, 41, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(217, 4, 41, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .tracking-route {
+            position: absolute;
+            width: 300px;
+            height: 3px;
+            /* --- THEME CHANGE: Red Gradient --- */
+            background: linear-gradient(90deg, #FF5E62, #D90429);
+            top: 40%;
+            left: 10%;
+            animation: drawRoute 4s infinite;
+        }
+
+        @keyframes drawRoute {
+            0% { width: 0; opacity: 0; }
+            50% { width: 300px; opacity: 1; }
+            100% { width: 300px; opacity: 0.5; }
+        }
+
+        .gps-marker {
+            position: absolute;
+            font-size: 40px;
+            animation: markerMove 4s infinite;
+            /* --- THEME CHANGE: Red Shadow --- */
+            filter: drop-shadow(0 4px 8px rgba(217, 4, 41, 0.4));
+        }
+
+        @keyframes markerMove {
+            0% { top: 40%; left: 10%; }
+            100% { top: 40%; left: 70%; }
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            /* --- THEME CHANGE: Red Border --- */
+            border: 3px solid #D90429;
+            border-radius: 50%;
+            animation: pulseRing 2s infinite;
+        }
+
+        .ring-1 {
+            top: 38%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+
+        .ring-2 {
+            top: 38%;
+            left: 68%;
+            animation-delay: 2s;
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .vehicle-icons {
+            position: absolute;
+        }
+
+        .vehicle-1 {
+            top: 60%;
+            left: 30%;
+            font-size: 35px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .vehicle-2 {
+            top: 20%;
+            right: 25%;
+            font-size: 35px;
+            animation: float 3s ease-in-out infinite;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .video-section {
+            padding: 100px 8%;
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #000;
+        }
+
+        .video-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .video-header h2 {
+            font-size: 48px;
+            /* --- THEME CHANGE: Light Text --- */
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .video-header p {
+            font-size: 19px;
+            /* --- THEME CHANGE: Light Gray Text --- */
+            color: #aaaaaa;
+        }
+
+        .video-demo {
+            max-width: 1100px;
+            margin: 0 auto;
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #1a1a1a;
+            border-radius: 25px;
+            padding: 20px; /* Adjusted padding */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .demo-screen {
+            width: 100%;
+            height: 450px;
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #000;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- ADDED CSS FOR VIDEO --- */
+        .demo-screen video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+        /* --- END OF ADDITION --- */
+        
+        /* --- REMOVED OLD ANIMATION CSS --- */
+        /* .dashboard-grid, .dashboard-card, @keyframes fadeInUp, .card-icon, .card-title, .card-value */
+        /* --- END OF REMOVAL --- */
+
+        .trust-section {
+            padding: 60px 8%;
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #111;
+            text-align: center;
+            /* --- THEME CHANGE: Dark Border --- */
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .trust-section h3 {
+            /* --- THEME CHANGE: Light Gray Text --- */
+            color: #aaaaaa;
+            font-size: 16px;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .trust-stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat h2 {
+            font-size: 48px;
+            /* --- THEME CHANGE: Red Text --- */
+            color: #D90429;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .stat p {
+            /* --- THEME CHANGE: Light Gray Text --- */
+            color: #aaaaaa;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .services-section {
+            padding: 100px 8%;
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #000;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-title h2 {
+            font-size: 48px;
+            /* --- THEME CHANGE: Light Text --- */
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .section-title p {
+            font-size: 19px;
+            /* --- THEME CHANGE: Light Gray Text --- */
+            color: #aaaaaa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+        }
+
+        .service-box {
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 45px 35px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            margin-bottom: 8px;
+        }
+
+        .service-box:hover {
+            /* --- THEME CHANGE: Red Border/Shadow --- */
+            border-color: #D90429;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(217, 4, 41, 0.2);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            /* --- THEME CHANGE: Red Gradient --- */
+            background: linear-gradient(135deg, #D90429, #B20021);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+
+        .service-box h3 {
+            font-size: 24px;
+            /* --- THEME CHANGE: Light Text --- */
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .service-box p {
+            /* --- THEME CHANGE: Light Gray Text --- */
+            color: #aaaaaa;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .why-choose {
+            padding: 100px 8%;
+            /* --- THEME CHANGE: Red Gradient BG --- */
+            background: linear-gradient(135deg, #D90429 0%, #B20021 100%);
+            color: #fff;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .why-item {
+            text-align: center;
+        }
+
+        .why-item h3 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .why-item p {
+            font-size: 17px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .footer {
+            /* --- THEME CHANGE: Dark BG --- */
+            background: #1a1a1a;
+            color: #94a3b8;
+            padding: 80px 8% 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand h2 {
+            /* --- THEME CHANGE: Red Text --- */
+            color: #D90429;
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand p {
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .footer-column h4 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            /* --- THEME CHANGE: Red Hover --- */
+            color: #D90429;
+        }
+
+        .footer-bottom {
+            /* --- THEME CHANGE: Dark Border --- */
+            border-top: 1px solid #333;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        /* ======================================= */
+        /* === RESPONSIVENESS AND MOBILE STYLES === */
+        /* ======================================= */
+        @media (max-width: 1024px) {
+            .trust-stats {
+                gap: 40px;
+            }
+            .hero-text h1 {
+                font-size: 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            
+            /* --- HEADER & NAVIGATION --- */
+            .top-bar {
+                /* Stack top bar content */
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 8%;
+            }
+            .top-bar-contact {
+                gap: 15px;
+                margin-bottom: 5px;
+            }
+
+            nav {
+                padding: 15px 8%;
+            }
+            
+            .nav-toggle-label {
+                display: block; /* Show hamburger menu icon */
+            }
+
+            .main-nav {
+                /* Overwrite desktop flex layout and hide by default */
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                
+                position: absolute;
+                top: 100%; /* Position below the sticky navbar */
+                left: 0;
+                width: 100%;
+                height: auto;
+                
+                /* Mobile Menu appearance */
+                background: #0a0a0a;
+                border-top: 1px solid #1a1a1a;
+                transform: translateX(-100%); /* Off-screen default state */
+                transition: transform 0.3s ease-in-out;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .main-nav li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .main-nav a {
+                padding: 15px 0;
+                display: block;
+                border-bottom: 1px solid #1a1a1a33; /* Light separator */
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            .main-nav li:last-child a {
+                border-bottom: none;
+            }
+
+            /* Show mobile menu when toggle is checked */
+            #nav-toggle:checked ~ .main-nav {
+                transform: translateX(0);
+            }
+            
+            .main-nav {
+                /* Re-applying display: flex for the mobile menu state */
+                /* The original media query set .main-nav to display: none. 
+                   We remove that rule and use transform instead for a smooth effect. */
+            }
+            
+            /* --- HERO SECTION --- */
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 60px 8%; /* Reduced vertical padding */
+                gap: 40px;
+            }
+            
+            .hero-text h1 {
+                font-size: 42px;
+                margin-bottom: 15px;
+            }
+
+            .hero-text p {
+                font-size: 18px;
+                margin-bottom: 30px;
+            }
+
+            .hero-buttons {
+                flex-direction: column; /* Stack buttons */
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+                padding: 14px 25px;
+            }
+            
+            .hero-animation {
+                display: none; /* Hide complex animation on mobile */
+            }
+
+            /* --- TRUST SECTION --- */
+            .trust-section {
+                padding: 40px 8%;
+            }
+
+            .trust-stats {
+                /* Override display: none from original code */
+                display: flex; 
+                flex-wrap: wrap; /* Allow stats to wrap */
+                justify-content: space-around;
+                gap: 30px 10px;
+            }
+
+            .stat {
+                flex: 1 1 45%; /* Two stats per row */
+                max-width: 45%;
+            }
+            
+            .stat h2 {
+                font-size: 38px;
+            }
+
+            /* --- GENERAL SECTIONS --- */
+            .video-section, .services-section, .why-choose {
+                padding: 60px 8%; /* Reduced padding for mobile */
+            }
+            
+            .video-header h2, .section-title h2 {
+                font-size: 32px;
+            }
+            
+            .video-header p, .section-title p {
+                font-size: 16px;
+            }
+
+            .demo-screen {
+                height: 250px; /* Smaller video frame */
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr; /* Stack services */
+                gap: 25px;
+            }
+            
+            .why-grid {
+                grid-template-columns: 1fr; /* Stack why items */
+                gap: 30px;
+            }
+
+            /* --- FOOTER --- */
+            .footer {
+                padding: 50px 8% 20px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr; /* Stack footer columns */
+                gap: 30px;
+            }
+            
+            .footer-brand h2 {
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stat {
+                flex: 1 1 100%; /* One stat per row for very small screens */
+                max-width: 100%;
+            }
+            .hero-text h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-contact">
+            <span>📞 +91-XXXXXXXXXX</span>
+            <span>✉️ info@omimportexport.in</span>
+        </div>
+        <div>24/7 Support Available</div>
+    </div>
+
+    <nav>
+        <div class="logo-container">
+            <img src="logo.png" alt="OM Import Export Logo" class="logo-shield">
+            <div class="logo-details">
+                <div class="logo">OM Import Export</div>
+                <div class="logo-tagline">GPS Tracking Solutions</div>
+            </div>
+        </div>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <label for="nav-toggle" class="nav-toggle-label">
+            <span class="hamburger"></span>
+        </label>
+        <ul class="main-nav">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact" class="nav-cta">Request Demo</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Transforming India With <span>GPS Tracking Solutions</span></h1>
+            <p>Cutting-edge GPS tracking technology that empowers businesses and individuals to enhance safety, security, and operational efficiency with real-time precision monitoring.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Get Started Now</a>
+                <a href="#" class="btn btn-secondary">View Solutions</a>
+            </div>
+        </div>
+        <div class="hero-animation">
+            <div class="map-container">
+                <div class="map-grid"></div>
+                <div class="tracking-route"></div>
+                <div class="pulse-ring ring-1"></div>
+                <div class="pulse-ring ring-2"></div>
+                <div class="gps-marker">📍</div>
+                <div class="vehicle-icons vehicle-1">🚛</div>
+                <div class="vehicle-icons vehicle-2">🚗</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <h3>Trusted by Industry Leaders</h3>
+        <div class="trust-stats">
+            <div class="stat">
+                <h2>15K+</h2>
+                <p>Active Devices</p>
+            </div>
+            <div class="stat">
+                <h2>800+</h2>
+                <p>Enterprise Clients</p>
+            </div>
+            <div class="stat">
+                <h2>99.9%</h2>
+                <p>System Uptime</p>
+            </div>
+            <div class="stat">
+                <h2>24/7</h2>
+                <p>Customer Support</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="video-section">
+        <div class="video-header">
+            <h2>Live GPS Dashboard</h2>
+            <p>Monitor your entire fleet in real-time with our powerful analytics dashboard</p>
+        </div>
+        <div class="video-demo">
+            <div class="demo-screen">
+                <video width="100%" height="100%" autoplay loop muted playsinline poster="placeholder-image.jpg">
+                    <source src="homepage-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            </div>
+    </section>
+
+    <section class="services-section">
+        <div class="section-title">
+            <h2>Comprehensive GPS Solutions</h2>
+            <p>Advanced tracking technology designed to meet the unique needs of businesses across all industries and scales.</p>
+        </div>
+        <div classs="services-grid">
+            <div class="service-box">
+                <div class="service-icon">🎯</div>
+                <h3>Pinpoint Accuracy</h3>
+                <p>Latest GPS technology providing exact location tracking with industry-leading precision for all your assets.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">⚡</div>
+                <h3>Live Monitoring</h3>
+                <p>Stay connected with 24/7 real-time tracking capabilities and instant updates on your dashboard.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">📈</div>
+                <h3>Advanced Reports</h3>
+                <p>Detailed analytics and insights including historical data and driver behavior analysis.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">🔧</div>
+                <h3>Custom Solutions</h3>
+                <p>Tailored tracking systems for personal use, small businesses, or large fleet operations.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">🛡️</div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock technical support ensuring your systems are always operational.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">🌐</div>
+                <h3>IoT Integration</h3>
+                <p>White-label GPS tracking with robust telematics software for real-time metrics.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-choose">
+        <div class="section-title">
+            <h2 style="color: #fff;">Why Choose OM Import Export?</h2>
+            <p style="color: rgba(255,255,255,0.9);">We combine cutting-edge technology with exceptional service to deliver unmatched GPS tracking solutions.</p>
+        </div>
+        <div class="why-grid">
+            <div class="why-item">
+                <h3>User-Friendly</h3>
+                <p>Intuitive interfaces designed for easy tracking and efficient management</p>
+            </div>
+            <div class="why-item">
+                <h3>Scalable</h3>
+                <p>Solutions that grow with your business from single devices to large fleets</p>
+            </div>
+            <div class="why-item">
+                <h3>Secure</h3>
+                <p>Enterprise-grade security protecting your data and privacy at all times</p>
+            </div>
+            <div class="why-item">
+                <h3>Reliable</h3>
+                <p>Industry-leading 99.9% uptime with redundant systems for continuity</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>OM Import Export</h2>
+                <p>Leading provider of GPS tracking solutions in India, committed to delivering cutting-edge technology for enhanced safety and efficiency.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Solutions</h4>
+                <ul>
+                    <li><a href="#">Fleet Tracking</a></li>
+                    <li><a href="#">Asset Tracking</a></li>
+                    <li><a href="#">Personal GPS</a></li>
+                    <li><a href="#">White Label</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 OM Import Export GPS. All rights reserved. Transforming India with GPS Tracking Solutions.</p>
+        </div>
+    </footer>
+</body>
+</html>

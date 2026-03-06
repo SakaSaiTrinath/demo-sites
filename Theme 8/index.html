@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OM Import Export - Revolutionary GPS Tracking</title>
+    <style>
+        :root {
+            --primary-red: #cc0000;
+            --secondary-orange: #ff4500;
+            --accent-yellow: #ffc400;
+            --bg: #0a0a0a;
+            --surface: #121212;
+            --surface-2: #1a1a1a;
+            --text: #ffffff;
+            --muted: #b0b0b0;
+            --overlay: rgba(10,10,10,0.7);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; font-family: Inter, Arial, sans-serif; background: var(--bg); color: var(--text); }
+        img, video { max-width: 100%; display: block; height: auto; }
+
+        /* Layout helpers */
+        .container { width: min(1200px, 100% - clamp(16px, 6vw, 80px)); margin-inline: auto; }
+        .section { padding: clamp(60px, 10vw, 120px) 0; }
+        .gradient-core { background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-orange) 50%, var(--accent-yellow) 100%); }
+
+        /* Header / Nav */
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(10,10,10,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand img { width: 56px; height: auto; }
+        .brand .name { font-weight: 900; letter-spacing: -0.3px; font-size: clamp(18px, 2.2vw, 26px); }
+        .brand .sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.4px; font-weight: 700; }
+
+        .desktop-nav { display: flex; gap: clamp(16px, 4vw, 40px); align-items: center; list-style: none; padding: 0; margin: 0; }
+        .desktop-nav a { color: var(--text); text-decoration: none; font-weight: 600; font-size: 15px; position: relative; }
+        .desktop-nav a::before { content: ""; position: absolute; left: 0; bottom: -6px; width: 0; height: 3px; background: linear-gradient(90deg, var(--primary-red), var(--accent-yellow)); }
+        .desktop-nav a:hover::before { width: 100%; }
+
+        .hamburger { display: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: var(--text); cursor: pointer; align-items: center; justify-content: center; }
+        .hamburger .lines { width: 22px; height: 2px; background: currentColor; position: relative; }
+        .hamburger .lines::before, .hamburger .lines::after { content: ""; position: absolute; left: 0; width: 22px; height: 2px; background: currentColor; }
+        .hamburger .lines::before { top: -7px; }
+        .hamburger .lines::after { top: 7px; }
+        .hamburger[aria-expanded="true"] .lines { background: transparent; }
+        .hamburger[aria-expanded="true"] .lines::before { top: 0; transform: rotate(45deg); }
+        .hamburger[aria-expanded="true"] .lines::after { top: 0; transform: rotate(-45deg); }
+
+        /* Mobile menu */
+        .overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(10px); opacity: 0; pointer-events: none; z-index: 999; }
+        .overlay.active { opacity: 1; pointer-events: auto; }
+        .drawer { position: fixed; right: 0; top: 0; height: 100vh; width: min(88vw, 420px); background: linear-gradient(135deg, #0b0b0b 0%, #151515 100%); border-left: 1px solid rgba(255,255,255,0.06); transform: translateX(100%); z-index: 1000; padding: 96px 28px 28px; }
+        .drawer.active { transform: translateX(0); }
+        .mobile-nav { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+        .mobile-nav a { color: var(--text); text-decoration: none; font-weight: 800; font-size: 22px; letter-spacing: .3px; }
+
+        /* Hero */
+        .hero { position: relative; overflow: hidden; }
+        .hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(24px, 5vw, 60px); align-items: center; }
+        .kicker { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); font-weight: 800; font-size: 13px; letter-spacing: .6px; text-transform: uppercase; margin-bottom: 22px; }
+        .kdot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary-red); }
+        .hero h1 { font-size: clamp(34px, 6vw, 82px); line-height: 1.06; letter-spacing: -2px; margin: 0 0 16px; font-weight: 900; }
+        .hero .gradient { background: linear-gradient(135deg, var(--primary-red), var(--secondary-orange), var(--accent-yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { color: var(--muted); font-size: clamp(16px, 2.2vw, 22px); line-height: 1.6; margin: 0 0 26px; }
+        .cta { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-primary { padding: 16px 32px; border-radius: 12px; border: none; color: #000; font-weight: 900; text-decoration: none; background: linear-gradient(135deg, var(--primary-red), var(--secondary-orange), var(--accent-yellow)); box-shadow: 0 18px 36px rgba(204,0,0,.28); }
+        .btn-primary:hover { filter: brightness(1.03); }
+        .btn-outline { padding: 16px 32px; border-radius: 12px; border: 2px solid #fff; color: #fff; text-decoration: none; font-weight: 900; }
+        .btn-outline:hover { background: #fff; color: #000; }
+
+        .visual { position: relative; aspect-ratio: 1 / 1; max-width: 540px; margin-inline: auto; }
+        .ring { position: absolute; inset: 10%; border-radius: 50%; border: 2px dashed rgba(204,0,0,.3); }
+        .logo { position: absolute; inset: 0; margin: auto; width: clamp(90px, 12vw, 150px); height: auto; border-radius: 50%; box-shadow: 0 0 40px rgba(204,0,0,.5); }
+        .emoji { display: none; }
+        .blob { position: absolute; filter: blur(100px); opacity: .5; border-radius: 50%; }
+        .b1 { width: 540px; height: 540px; background: var(--primary-red); top: -200px; right: -200px; }
+        .b2 { width: 600px; height: 600px; background: var(--accent-yellow); bottom: -320px; left: -220px; }
+
+        /* Video / Map section */
+        .showcase h2 { font-size: clamp(28px, 5.6vw, 64px); margin: 0 0 8px; letter-spacing: -2px; font-weight: 900; text-align: center; }
+        .showcase p { color: #888; font-size: clamp(16px, 2.4vw, 20px); text-align: center; margin: 0 0 28px; }
+        .screen { background: linear-gradient(135deg, var(--surface-2), var(--surface)); border: 2px solid var(--primary-red); border-radius: 28px; padding: clamp(12px, 2.4vw, 20px); box-shadow: 0 0 50px rgba(204,0,0,.35); }
+        .player { width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; position: relative; }
+        .player video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Features */
+        .center { text-align: center; }
+        .section-lead { color: #888; font-size: clamp(16px, 2.4vw, 20px); max-width: 760px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(16px, 3.2vw, 32px); margin-top: clamp(28px, 4vw, 40px); }
+        .card { grid-column: span 4; min-height: 220px; padding: clamp(22px, 3.2vw, 36px); border-radius: 18px; border: 1px solid #222; background: linear-gradient(135deg, var(--surface) 0%, #0e0e0e 100%); }
+        .card:hover { border-color: var(--primary-red); box-shadow: 0 20px 50px rgba(204,0,0,.18); }
+        .card .icon { width: 72px; height: 72px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 18px; color: #000; font-size: 34px; background: linear-gradient(135deg, var(--primary-red), var(--accent-yellow)); }
+        .card h3 { margin: 0 0 10px; font-size: clamp(18px, 2.6vw, 24px); font-weight: 800; }
+        .card p { margin: 0; color: var(--muted); font-size: clamp(14px, 2.2vw, 16px); line-height: 1.7; }
+
+        /* Numbers */
+        .numbers { color: #000; }
+        .numbers .wrap { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: clamp(20px, 3.2vw, 40px); text-align: center; }
+        .numbers h3 { font-size: clamp(28px, 6.4vw, 64px); margin: 0 0 6px; font-weight: 900; letter-spacing: -1px; }
+        .numbers p { margin: 0; font-weight: 700; font-size: clamp(14px, 2.6vw, 18px); opacity: .9; }
+
+        /* CTA */
+        .cta-box { border-radius: 28px; border: 2px solid var(--primary-red); background: linear-gradient(135deg, var(--surface-2), var(--surface)); padding: clamp(28px, 5vw, 64px); text-align: center; box-shadow: 0 0 40px rgba(204,0,0,.25); }
+        .cta-box h2 { font-size: clamp(24px, 5vw, 54px); letter-spacing: -1.6px; margin: 0 0 12px; font-weight: 900; }
+        .cta-box p { color: var(--muted); margin: 0 0 22px; font-size: clamp(16px, 2.4vw, 20px); }
+
+        /* Footer */
+        footer { border-top: 1px solid #1a1a1a; padding: 40px 0; }
+        .fbrand { font-weight: 900; font-size: clamp(22px, 3vw, 36px); background: linear-gradient(135deg, var(--primary-red), var(--accent-yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 10px; }
+        .ftext { color: #666; text-align: center; margin: 0 0 18px; font-size: 15px; }
+        .flinks { display: flex; gap: 28px; justify-content: center; list-style: none; padding: 0; margin: 0 0 18px; }
+        .flinks a { color: #888; text-decoration: none; font-weight: 600; }
+        .flinks a:hover { color: var(--primary-red); }
+        .copy { color: #555; text-align: center; font-size: 13px; }
+
+        /* Scroll reveal */
+        .reveal { opacity: 1; transform: none; }
+        .reveal.show { opacity: 1; transform: none; }
+        .delay1, .delay2, .delay3 { }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .desktop-nav { display: none; }
+            .hamburger { display: inline-flex; }
+            .hero-inner { grid-template-columns: 1fr; text-align: center; }
+            .visual { order: -1; }
+        }
+        @media (max-width: 900px) {
+            .card { grid-column: span 6; }
+        }
+        @media (max-width: 720px) {
+            .card { grid-column: span 12; }
+            .numbers .wrap { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        }
+        @media (max-width: 480px) {
+            .numbers .wrap { grid-template-columns: 1fr; }
+            .cta a { width: 100%; text-align: center; }
+        }
+        @media (min-width: 1400px) {
+            .container { width: min(1400px, 100% - 12vw); }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav" role="navigation" aria-label="Primary">
+            <div class="brand">
+                <img src="logo.png" alt="OM Import Export Logo" />
+                <div>
+                    <div class="name">OM Import Export</div>
+                    <div class="sub">GPS Tracking</div>
+                </div>
+            </div>
+            <ul class="desktop-nav" role="menubar">
+                <li role="none"><a role="menuitem" href="#home">Home</a></li>
+                <li role="none"><a role="menuitem" href="#features">Features</a></li>
+                <li role="none"><a role="menuitem" href="#solutions">Solutions</a></li>
+                <li role="none"><a role="menuitem" href="#pricing">Pricing</a></li>
+                <li role="none"><a role="menuitem" href="#contact">Contact</a></li>
+            </ul>
+            <button class="hamburger" aria-controls="drawer" aria-expanded="false" aria-label="Open menu">
+                <span class="lines"></span>
+            </button>
+        </div>
+    </header>
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-hidden="true">
+        <nav class="container">
+            <ul class="mobile-nav">
+                <li><a href="#home" data-close>Home</a></li>
+                <li><a href="#features" data-close>Features</a></li>
+                <li><a href="#solutions" data-close>Solutions</a></li>
+                <li><a href="#pricing" data-close>Pricing</a></li>
+                <li><a href="#contact" data-close>Contact</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <section id="home" class="hero section">
+            <div class="blob b1" aria-hidden="true"></div>
+            <div class="blob b2" aria-hidden="true"></div>
+            <div class="container hero-inner">
+                <div class="text reveal">
+                    <div class="kicker"><span class="kdot"></span> Live GPS Tracking Platform</div>
+                    <h1>The Future of <span class="gradient">GPS Tracking</span> Is Here</h1>
+                    <p>Revolutionary tracking technology powered by AI and real-time analytics. Monitor, manage, and optimize your entire fleet with unprecedented precision and control.</p>
+                    <div class="cta">
+                        <a href="#pricing" class="btn-primary">Get Started Free</a>
+                        <a href="#contact" class="btn-outline">Book a Demo</a>
+                    </div>
+                </div>
+                <div class="visual reveal delay2" aria-hidden="true">
+                    <div class="ring"></div>
+                    <img class="logo" src="logo.png" alt="" />
+                    <div class="emoji e1">🚛</div>
+                    <div class="emoji e2">🚗</div>
+                    <div class="emoji e3">🚌</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solutions" class="section showcase">
+            <div class="container">
+                <h2 class="reveal center">Real-Time GPS In Action</h2>
+                <p class="reveal center">Watch live vehicle tracking with route optimization and analytics</p>
+                <div class="screen reveal">
+                    <div class="player">
+                        <video controls poster="video-poster.jpg" autoplay loop muted playsinline>
+                            <source src="homepage-video.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <div class="container">
+                <div class="center">
+                    <h2 class="reveal">Everything You Need</h2>
+                    <p class="section-lead reveal">Comprehensive GPS tracking solutions with cutting-edge features designed for modern businesses and fleet operations.</p>
+                </div>
+                <div class="grid">
+                    <article class="card reveal">
+                        <div class="icon">🎯</div>
+                        <h3>Ultra-Precise Tracking</h3>
+                        <p>Military-grade GPS technology with sub-meter accuracy. Know exactly where your assets are at all times with real-time updates every second.</p>
+                    </article>
+                    <article class="card reveal delay1">
+                        <div class="icon">🚀</div>
+                        <h3>AI-Powered Insights</h3>
+                        <p>Machine learning algorithms analyze your data to predict maintenance needs, optimize routes, and reduce operational costs automatically.</p>
+                    </article>
+                    <article class="card reveal delay2">
+                        <div class="icon">⚡</div>
+                        <h3>Instant Alerts</h3>
+                        <p>Get notified immediately about speeding, geofence breaches, harsh driving, and any unusual activity with customizable smart alerts.</p>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon">📊</div>
+                        <h3>Advanced Analytics</h3>
+                        <p>Powerful dashboards with detailed reports, driver scorecards, fuel consumption analysis, and performance metrics visualization.</p>
+                    </article>
+                    <article class="card reveal delay1">
+                        <div class="icon">🔒</div>
+                        <h3>Enterprise Security</h3>
+                        <p>Bank-level encryption, multi-factor authentication, and role-based access control to keep your data completely secure.</p>
+                    </article>
+                    <article class="card reveal delay2">
+                        <div class="icon">🌐</div>
+                        <h3>White Label API</h3>
+                        <p>Complete white-label solutions with robust RESTful API for seamless integration into your existing systems and workflows.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="section numbers gradient-core">
+            <div class="container wrap">
+                <div>
+                    <h3 class="reveal">50K+</h3>
+                    <p class="reveal">Devices Tracked Daily</p>
+                </div>
+                <div>
+                    <h3 class="reveal">2500+</h3>
+                    <p class="reveal">Enterprise Clients</p>
+                </div>
+                <div>
+                    <h3 class="reveal">99.99%</h3>
+                    <p class="reveal">System Uptime</p>
+                </div>
+                <div>
+                    <h3 class="reveal">&lt;100ms</h3>
+                    <p class="reveal">Response Time</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="cta-box reveal">
+                    <h2>Ready to Transform Your Operations?</h2>
+                    <p>Join thousands of businesses already using our revolutionary GPS tracking platform. Start your free 30-day trial today, no credit card required.</p>
+                    <a href="#pricing" class="btn-primary">Start Free Trial Now</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="fbrand">OM Import Export</div>
+            <p class="ftext">Transforming India with cutting-edge GPS tracking solutions</p>
+            <ul class="flinks">
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Solutions</a></li>
+                <li><a href="#">Pricing</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Privacy</a></li>
+            </ul>
+            <div class="copy">&copy; 2025 OM Import Export GPS. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        const body = document.body;
+        const btn = document.querySelector('.hamburger');
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('overlay');
+        const closeLinks = document.querySelectorAll('[data-close]');
+
+        function openMenu() {
+            btn.setAttribute('aria-expanded', 'true');
+            drawer.classList.add('active');
+            overlay.classList.add('active');
+            drawer.setAttribute('aria-hidden', 'false');
+            body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            btn.setAttribute('aria-expanded', 'false');
+            drawer.classList.remove('active');
+            overlay.classList.remove('active');
+            drawer.setAttribute('aria-hidden', 'true');
+            body.style.overflow = '';
+        }
+        btn.addEventListener('click', () => {
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            expanded ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        closeLinks.forEach(a => a.addEventListener('click', closeMenu));
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+        // reveal disabled (no animations)
+    })();
+    </script>
+</body>
+</html>

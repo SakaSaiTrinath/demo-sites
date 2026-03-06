@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - OM Import Export</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+
+        .hero-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            padding: 150px 8% 80px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before, .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(217, 4, 41, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .hero-section::before {
+            top: -200px;
+            right: -200px;
+        }
+
+        .hero-section::after {
+            bottom: -300px;
+            left: -300px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+            position: relative;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #D90429, #B20021);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hero-content h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -2px;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #aaaaaa;
+            margin-bottom: 20px;
+        }
+
+        .about-content {
+            padding: 120px 8%;
+            background: #000;
+        }
+
+        .content-section {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section h2 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .content-section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #aaaaaa;
+            margin-bottom: 25px;
+        }
+
+        .what-we-do {
+            padding: 120px 8%;
+            background: #1a1a1a;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+        }
+
+        .section-header h2 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: #aaaaaa;
+            line-height: 1.6;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background: #0a0a0a;
+            border-radius: 24px;
+            padding: 50px;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #D90429 0%, #B20021 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 0;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(217, 4, 41, 0.3);
+        }
+
+        .service-card > * {
+            position: relative;
+            z-index: 1;
+            transition: color 0.4s;
+        }
+
+        .service-card:hover > * {
+            color: #fff;
+        }
+
+        .service-card h3 {
+            font-size: 28px;
+            margin-bottom: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .service-card p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #aaaaaa;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 40px;
+            border: 2px solid rgba(217, 4, 41, 0.2);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: #D90429;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(217, 4, 41, 0.2);
+        }
+
+        .feature-card h4 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .feature-card p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #aaaaaa;
+        }
+
+        .footer {
+            padding: 60px 8%;
+            background: #1a1a1a;
+            color: #aaaaaa;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF5E62 0%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content h1 {
+                font-size: 48px;
+            }
+
+            .section-header h2, .content-section h2 {
+                font-size: 42px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 120px 5% 60px;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .hero-content p {
+                font-size: 16px;
+            }
+
+            .about-content, .what-we-do {
+                padding: 80px 5%;
+            }
+
+            .section-header h2, .content-section h2 {
+                font-size: 32px;
+            }
+
+            .section-header p, .content-section p {
+                font-size: 16px;
+            }
+
+            .services-grid, .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-card {
+                padding: 40px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .footer-logo {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+    <script src="navbar.js"></script>
+</head>
+<body>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="badge">🚀 About OM Import Export</div>
+            <h1>About <span>Us</span></h1>
+            <p><strong>AT OM IMPORT EXPORT</strong>, we are passionate about empowering businesses with our state-of-the-art GPS tracking software solutions. Our team of experienced developers and industry experts work tirelessly to create innovative software solutions that help businesses optimize their operations, reduce costs, and increase profitability.</p>
+        </div>
+    </section>
+
+    <section class="about-content">
+        <div class="content-section">
+            <p>OM IMPORT EXPORT, the top GPS Tracking System Company in India. Our robust app and web platform, along with our award-winning GPS trackers that have been approved by the government, cover all major cities in India and offer a solution for individuals in various walks of life, including school buses, commercial vehicles, and independent taxi drivers. We've developed into a potent global workforce and forged connections with tens of thousands of partners and clients across the globe. Our motivation to create solutions and products that our partners and clients are glad to use on a daily basis comes from our cooperation, curiosity, and commitment to assist businesses in achieving their fleet management and commercial goals. World's fastest growing OM IMPORT EXPORT company with vehicle remote system lock unlock services</p>
+            
+            <p>Our GPS tracking software is designed with businesses of all sizes in mind, and our customizable solution can be tailored to meet the unique needs of your business. We understand that every business is different, and our software is designed to adapt to your specific requirements. At OM IMPORT EXPORT, we pride ourselves on our commitment to customer satisfaction.</p>
+            
+            <p>We work closely with our clients to understand their business needs and provide ongoing support to ensure that our software solutions continue to meet their requirements as their business grows and evolves. Our team is dedicated to staying at the forefront of the industry, and we continuously invest in research and development to ensure that our software remains innovative and cutting-edge.</p>
+            
+            <p>We are committed to providing our clients with the most advanced GPS tracking software solutions available on the market today. Whether you are looking to improve efficiency, reduce costs, or increase profitability, Fleet Stack has the solution for you. Contact us today to learn more about how our GPS tracking software can help your business succeed.</p>
+        </div>
+    </section>
+
+    <section class="what-we-do">
+        <div class="section-header">
+            <h2>What We Do</h2>
+            <p>Comprehensive GPS tracking solutions designed to optimize your business operations</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>1. GPS Fleet Management Solutions</h3>
+                <p>OM IMPORT EXPORT provides a Complete and Comprehensive Professional Fleet Management Solutions. A highly scalable and customized solution for optimizing your Fleet</p>
+            </div>
+            <div class="service-card">
+                <h3>2. Supply Chain Analytics</h3>
+                <p>Optimize your entire Supply Chain right from manufacturing to Planning operations. The smooth collaboration of activities among suppliers, manufacturers, distributors, Third-Party Logistics etc.</p>
+            </div>
+            <div class="service-card">
+                <h3>3. Logistics Management Solutions</h3>
+                <p>A modular approach which can fit from Procurement to Production Planning, Inventory Management to Warehouse Optimization.</p>
+            </div>
+            <div class="service-card">
+                <h3>4. Vehicle Tracking</h3>
+                <p>Our Software Collects real-time fleet data for a comprehensive picture of Fleet Locations resulting in a positive impact on operational cost structure, White labeled solutions for brand building.</p>
+            </div>
+            <div class="service-card">
+                <h3>5. Control Center</h3>
+                <p>Outsource the traffic management of your operations. Robust remote monitoring platform with tailor made solutions for Logistics management enabling enormous data accessibility to multiple stakeholders.</p>
+            </div>
+            <div class="service-card">
+                <h3>6. Open Market Fleet Monitoring</h3>
+                <p>Holistic platform enabled by customized business modules to ensure 100% compliance for open market fleet and ensuring efficient and robust processes to attain higher ROI's.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-content">
+        <div class="content-section">
+            <h2>GPS Vehicle Tracking and Fleet Management Software</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>Live Vehicle Tracking</h4>
+                    <p>Know the current & exact location of your Fleet on the web and mobile. Live Tracking can enable better visibility of your fleet.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Integration</h4>
+                    <p>ERP Integration is an integral part of our solution so that Location data and Analytics can be incorporated into day-to-day decision making.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Analytics Driven Solutions</h4>
+                    <p>Customized solutions based on Business as well as operational understanding which allows organizations to make informed decisions.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Asset Tracking</h4>
+                    <p>Optimize asset allocation and monitor asset health to efficiently manage asset as well as improve efficiency of your operations.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Reporting & Metrics</h4>
+                    <p>Measure, manage, analyze and improve your overall Fleet's operational efficiency, customized reports as per your requirement.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Route Optimization</h4>
+                    <p>Efficient route planning with multi-stop routing can reduce fuel consumption and maximize efficiency thus improving ROI.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Real-Time Notification and Alerts</h4>
+                    <p>Get the details of any and all defaults of your fleet via real-time alerts and notifications.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Geofencing/ POI's/ Mapping</h4>
+                    <p>Creating a virtual periphery around plant sites, warehouses, customer locations etc. Enables TAT calculations and alerts for entry/exit.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Employee Tracking</h4>
+                    <p>Track your entire field workforce right from one mobile app, schedule and update meetings agendas etc.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Fuel Management</h4>
+                    <p>Monitor and analyze fuel consumption over time and distance for optimizing fuel spend.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">OM Import Export</div>
+            <p>&copy; 2025 OM Import Export GPS. Transforming India with GPS Tracking Solutions.</p>
+        </div>
+    </footer>
+</body>
+</html>
